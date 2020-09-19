@@ -8,7 +8,8 @@ Have a nice day !
 
 
 Edit 20 spetember 2020 :
-installPortainerRestartAlwaysLimit.sh
-Same as above but this version is able to limit the memory an cpu foot print for tinny or / and old computer by default to 20% of 1 CPU, 10M of ram and 90M swap.
-Please check comments in the script before to use or change values. 
+
+About installPortainerRestartAlwaysLimit.sh
+
+Same goal as installPortainerRestartAlways.sh but this version is able to limit the memory an cpu foot print for tinny or / and old computer by default to 20% of 1 CPU, 10M of ram and 90M swap. Please check comments in the script before to use or change values. 
 
