@@ -3,7 +3,7 @@
 # 20 september 2020 
 # Create a conainer with portainer in order to easly manage docker container 
 # Original code from https://portainer.io/install.html
-# This version is able to limit the memory an cpu foot print for tinny aand old computer  
+# This version is able to limit the memory an cpu foot print for tinny and old computer  
 
 # Tested on :
 # DOCKER CLIENT :
@@ -31,13 +31,14 @@ CONTAINER_VOLUME_NAME=portainer_data
 # or https://docs.docker.com/config/containers/resource_constraints/
 
 # https://docs.docker.com/config/containers/resource_constraints/#limit-a-containers-access-to-memory 
-# NOTA : if --memory="300m" and --memory-swap="1g", the container can use 300m of memory and 700m (1g - 300m) swap
+#here sA : if --memory="300m" and --memory-swap="1g", the container can use 300m of memory and 700m (1g - 300m) here usable swap is 90m
 MEMORY_LIMIT=10m
 SWAP_LIMIT=100m
 
 # https://docs.docker.com/config/containers/resource_constraints/#configure-the-default-cfs-scheduler
 # Only compliant with docker 1.13 and higher
 CPU_LIMIT=.2
+
 # before  1.13 or if you have a problem
 #Limit a group to 20% of 1 CPU.
 # With 50ms period, 10ms quota will be equivalent to 20% of 1 CPU.
