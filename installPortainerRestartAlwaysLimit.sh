@@ -52,7 +52,7 @@ CPU_LIMIT_QUOTA=10000
 docker volume create $CONTAINER_VOLUME_NAME
 
 # Install portnair withe auomatic restart at reboot reboot 
-docker run -d --name=$CONTAINER_NAME --restart=always -p $CONTAINER_INSIDE_PORT:$CONTAINER_OUTISE_PORT -v /var/run/docker.sock:/var/run/docker.sock -v $CONTAINER_VOLUME_NAME:/data portainer/portainer
+docker run -d --name=$CONTAINER_NAME --restart=always -p $CONTAINER_INSIDE_PORT:$CONTAINER_OUTISE_PORT -v /var/run/docker.sock:/var/run/docker.sock -v $CONTAINER_VOLUME_NAME:/data portainer/portainer-ce
 
 # ---- Apply limit footprint -> update the container -----
 # MEMORY 
