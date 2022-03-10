@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# 20 september 2020 
-# Create a conainer with portainer in order to easly manage docker container 
-# Original code from https://portainer.io/install.html
+# 10 mars 2022
+# Create a conainer with portainer in order to easly manage docker container Community Edition
+# Original code from https://docs.portainer.io/v/ce-2.11/start/install/server/docker/linux
 # This version is able to limit the memory an cpu foot print for tinny and old computer  
 
 # Tested on :
@@ -19,11 +19,15 @@
 #  OS/Arch:          linux/amd64
 #  Experimental:     false
 
+# Portainer basic conf
+PORTAINER_REPOSITORY=portainer/portainer-ce
+PORTAINER_VERSION=2.11.1
+
 
 # Container basic conf
 CONTAINER_NAME=Portainer
 CONTAINER_INSIDE_PORT=9000
-CONTAINER_OUTISE_PORT=9000
+CONTAINER_OUTSIDE_PORT=9000
 CONTAINER_VOLUME_NAME=portainer_data
 
 # Limit the container footprint (usefull on old / tiny computer )
@@ -31,8 +35,9 @@ CONTAINER_VOLUME_NAME=portainer_data
 # or https://docs.docker.com/config/containers/resource_constraints/
 
 # https://docs.docker.com/config/containers/resource_constraints/#limit-a-containers-access-to-memory 
-#here sA : if --memory="300m" and --memory-swap="1g", the container can use 300m of memory and 700m (1g - 300m) here usable swap is 90m
-MEMORY_LIMIT=10m
+# here sA : if --memory="300m" and --memory-swap="1g", the container can use 300m of memory and 700m (1g - 300m) here usable swap is 90m
+# Portianer need at least more than 12M to work  
+MEMORY_LIMIT=15m
 SWAP_LIMIT=100m
 
 # https://docs.docker.com/config/containers/resource_constraints/#configure-the-default-cfs-scheduler
@@ -52,7 +57,8 @@ CPU_LIMIT_QUOTA=10000
 docker volume create $CONTAINER_VOLUME_NAME
 
 # Install portnair withe auomatic restart at reboot reboot 
-docker run -d --name=$CONTAINER_NAME --restart=always -p $CONTAINER_INSIDE_PORT:$CONTAINER_OUTISE_PORT -v /var/run/docker.sock:/var/run/docker.sock -v $CONTAINER_VOLUME_NAME:/data portainer/portainer-ce
+docker run -d --name=$CONTAINER_NAME --restart=always -p $CONTAINER_INSIDE_PORT:$CONTAINER_OUTSIDE_PORT -v /var/run/docker.sock:/var/run/docker.sock -v $CONTAINER_VOLUME_NAME:/data $PORTAINER_REPOSITORY:$PORTAINER_VERSION
+# docker run -d --name=Portainer --restart=always -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:2.11.1
 
 # ---- Apply limit footprint -> update the container -----
 # MEMORY 
@@ -65,7 +71,11 @@ docker update $CONTAINER_NAME --cpus $CPU_LIMIT
 # XOR for previuous Docker version !!!     
 #docker update $CONTAINER_NAME --cpu-period $CPU_LIMIT_PERIODE --cpu-quota $CPU_LIMIT_QUOTA
 
-echo "In order to acces to portnair interface use your web browser http://@ipportnair:'$CONTAINER_OUTISE_PORT' "
+echo "In order to acces to portnair interface use your web browser http://@ipportnair:'$CONTAINER_OUTSIDE_PORT' "
 echo "When configuring Portainer choose option localport for the endpoint !"
 echo "In order to check if limitation are corectly apply to your container $CONTAINER_NAME use the command :"
 echo "$sudo docker stats"
+echo "------------------------------------------------------------------------------------------------------"
+echo "NOTA : if you get error 'Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.' "
+echo "take a look at https://stackoverflow.com/questions/48685667/what-does-docker-mean-when-it-says-memory-limited-without-swap"
+echo "'if docker swap option is disable in cgroup you take the risk that the container was drop by docker if ther is not enought ram in the container ' "
