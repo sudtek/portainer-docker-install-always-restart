@@ -8,7 +8,7 @@ Dear head scatterbrained this is my 2 cents for you in order to avoid us to do t
 Have a nice day !
 
 
-Edit 20 spetember 2020 :
+Edit 20 september 2020 :
 
 About installPortainerRestartAlwaysLimit.sh
 
