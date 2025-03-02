@@ -25,7 +25,8 @@
 
 # Portainer basic conf
 PORTAINER_REPOSITORY=portainer/portainer-ce
-PORTAINER_VERSION=2.11.1
+# PORTAINER_VERSION=2.11.1
+PORTAINER_VERSION=2.27.1
 
 # Container basic conf
 CONTAINER_NAME=Portainer
