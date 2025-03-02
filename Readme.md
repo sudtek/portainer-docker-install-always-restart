@@ -32,24 +32,21 @@ Note du 03 Mars 2025 :
 
 + Update vers Portainer Community Edition 2.27.1
 
-
-Script d'Installation de Portainer avec Podman en Mode Rootless sur Alpine Linux
-
 -----
 
 # Distribution Alpine + PODMAN.
 
+Script d'Installation de Portainer avec Podman en Mode Rootless sur Alpine Linux.
+
 ## installPortainerRestartAlwaysLimit_PA.sh
 
-Ce script automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux. Il configure Portainer pour qu'il redémarre automatiquement au démarrage et limite les ressources CPU et mémoire pour les anciens ou petits ordinateurs.
+Ce script automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux. Il configure Portainer pour qu'il redémarre automatiquement au démarrage et limite les ressources CPU et mémoire.
 
-
-##installPortainerRestartAlwaysLimit_DU.sh
 ## Prérequis
 
-- Alpine Linux v3.21 ou supérieure.
+- Alpine Linux v3.21.
 - Podman installé en mode rootless.
-- Accès utilisateur avec les droits nécessaires pour exécuter Podman.
+- Accès utilisateur avec les droits minimum nécessaires pour pouvoir exécuter Podman.
 
 ## Instructions d'Utilisation
 
@@ -96,23 +93,91 @@ Volume de Données : Le script supprime et recrée le volume de données portain
 Conclusion
 Ce script facilite l'installation de Portainer avec Podman en mode rootless sur Alpine Linux. En suivant ces instructions, vous pouvez gérer vos conteneurs via l'interface web de Portainer exactement comme sous docker.
 
+---------
 
-Note
+# ATTENTION AVEC LE MODE ROOTLESS
 
+Le mode ROOTLESS présente une subtilité importante : Par habitude en venant d'ubuntu il est facile de se pieger tout seul et d'exécuter le script via doas ou sudo. Cependant, en procédant ainsi, le conteneur Portainer ne s'exécutera plus sous l'utilisateur base qui l'a lancé, mais sous l'utilisateur root. Par conséquent, votre utilisateur ne pourra plus voir le conteneur en cours d'exécution. Si vous relancez l'installation du conteneur via le script, vous risquez de rencontrer des erreurs plus ou moins explicites et de ne pas pouvoir écraser le conteneur précédent, qui occupera toujours le port local 9000. Si vous êtes confronté à cette situation, effectuez les vérifications suivantes pour clarifier la situation : 
+
+Via l'uilisateur base vérifier la disponiblité du port local 9000 !
+Si la commande '$(netstat -lap)' confirme que le port 9000 existe sans PID -
+
+```
+$netstat -lap
+
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:9000            0.0.0.0:*               LISTEN      -
+```
+Faites une verification via la commande '$(podman stats -a)' plus de container nommé 'Portainer' en éxécution :
+
+```
+$podman stats -a
+
+ID          NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO      BLOCK IO    PIDS        CPU TIME    AVG CPU
+```
+
+Si le stats -a confirme qu'il n'y a aucun conteneur nommé 'Portainer' et aucun PIDS commun avec le port local 9000 visible et juste un -  alors depuis votre user refaites les mêmes manip mais avec doas ou sudo !
+
+```
+$doas netstat -lap
+
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:9000            0.0.0.0:*               LISTEN      6579/pasta
+```
+et 
+```
+$doas podman stats -a
+
+ID            NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO        BLOCK IO           PIDS        CPU TIME      AVG CPU %
+b29bc65098c0  Portainer   0.29%       111.3MB / 4.082GB  2.73%       0B / 4.086kB  61.99MB / 2.646MB  58          4m39.892525s  0.18%
+```
+
+Si vous voyes cela c'est que vous avez merdé ... et lancé votre precedente installation de Portainer en invoquant doas ou sudo !!!
+
+Vous devez impérativement tout nettoyer manuellement*  en faisant doas ou sudo puisque votre Portainer a été lancé avec des droits plus élevès que l'utilisateur de base :
+
+- 1) Arreter le container Portainer.
+- 2) Supprimer le container Portainer.
+- 3) Supprimer le volume Portainer_DATAle  et faire le ménage via doas ou sudo avant de relancer le script en utilisateur normal.
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------
+
+* Pour mémoire vu que j'ai pas fait de script ;)  pour cela ...
+
+# On verifie s'il existe un container VISIBLE entrain de tourner avec un processus et on essaye de le stoper proprement !
+CONTAINER_RUN=$(podman ps | grep -i "$CONTAINER_NAME\b")
 #
-# Avant d'installer Portainer il faut impérativement vérifier la disponiblité du port local 9000 !
-# Si la commande '$(netstat -lap)' confirme que le port 9000 existe sans PID -
+if [ -n "$CONTAINER_RUN" ]; then
+    echo -e "\nATTENTION : Le container : $CONTAINER_RUN est actuellement lancé !"
+    echo -e "\n $CONTAINER_RUN"
+    # On arrete le conteneur
+    $(podman stop ${CONTAINER_NAME})
+else
+   echo -e "\nOK : Le container $CONTAINER_NAME ne semble pas être lancé."
+fi
+
+# On verifie si le port local exemple 9000 est déja utilisé
+PORT_IN_USE=$(netstat -tuln | grep ":$CONTAINER_OUTSIDE_PORT\b")
 #
-# $(netstat -lap)
-# Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-# tcp        0      0 0.0.0.0:9000            0.0.0.0:*               LISTEN      -
+if [ -n "$PORT_IN_USE" ]; then
+    echo -e "\nATTENTION : Le port $CONTAINER_OUTSIDE_PORT est actuellement connecté !"
+    echo -e "\n $PORT_IN_USE"
+else
+    echo -e "\nOK : Le port $CONTAINER_OUTSIDE_PORT est libre."
+fi
+
+
+# On affiche tous les containers pour chercher portainer et le supprimer
+CONTAINER_EXIST=$(podman ps -all | grep -i "$CONTAINER_NAME\b")
 #
-# Il faut confirmer via la commande '$(podman stats -a)' qu'il n'y a pas / plus de container nommé 'Portainer' en éxécution :
-#
-# $(podman stats -a)
-# ID          NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO      BLOCK IO    PIDS        CPU TIME    AVG CPU
-#
-# Si le stats -a confirme qu'il n'y a aucun conteneur nommé 'Portainer' et aucun PIDS commun avec le port local 9000 -> un zombie squate votre port 9000 !
-# Ce problème semble subvenir lorsque l'on relance ce script  sans avoir pris soin de tout netoyer manuelement. La commande '$(podman --replace ...)'
-# n'arrete pas le container Portainer entrain de tourner, ni ne libére le port ... et il faut faire le ménage' manuelement' avant de recréer  !
+if [ -n "$CONTAINER_EXIST" ]; then
+    echo -e "\nATTENTION : Le container $CONTAINER_NAME existe et va être définitivement supprimé !"
+    echo -e "\n $CONTAINER_EXIST"
+    # On efface le conteneur
+    $(podman rm -f ${CONTAINER_NAME})
+else
+    echo -e "\nAucun container nommé '$CONTAINER_NAME' à supprimer."
+fi
+
 # ----------------------------------------------------------------------------------------------------------------------------------------
