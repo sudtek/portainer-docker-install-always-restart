@@ -1,4 +1,4 @@
-# portainer-docker-install-always-restart
+# portainer-docker-install-always-restart for docker and ubuntu
 
 About installPortainerRestartAlways.sh
 
