@@ -3,11 +3,10 @@
 # 10/mars/2022
 # yannick SUDRIE
 #
+# Nota : 02/mars/2025 Obsolet use the version be able to limite container CPU,ram ... via cgroups instead !
 # Create a container with portainer in order to easly manage docker container Community Edition on Ubuntu
 # original code from https://portainer.io/install.html
 # Original code from https://docs.portainer.io/v/ce-2.11/start/install/server/docker/linux
-#
-# Nota : 02/mars/2025 Obsolet use the limited version instead
 
 # Create a volume data for portainer
 docker volume create portainer_data
