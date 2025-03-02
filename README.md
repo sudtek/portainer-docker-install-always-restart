@@ -1,6 +1,6 @@
 # portainer-docker-install-always-restart for docker and ubuntu
 
-About installPortainerRestartAlways.sh
+About installPortainerRestartAlways_D&U.sh
 
 A very simple script extract from portnair.io https://portainer.io/install.html in order to install portnair for docker with portnair automatic restart.
 Every time i install portainer i always forget to add the persistent option in order that docker bring it up to live at the next reboot ...
