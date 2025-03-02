@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# 10 mars 2022
-# Create a conainer with portainer in order to easly manage docker container Community Edition
+# 10/mars/2022
+# yannick SUDRIE
+# Create a container with portainer in order to easly manage docker container Community Edition
 # Original code from https://docs.portainer.io/v/ce-2.11/start/install/server/docker/linux
 # This version is able to limit the memory an cpu foot print for tinny and old computer  
-
-# Tested on :
+#
+# DU = Docker & Ubuntu
+#
+# Tested on Ubuntu.
 # DOCKER CLIENT :
 #  Version: 19.03.8
 #  API version: 1.40
@@ -22,7 +25,6 @@
 # Portainer basic conf
 PORTAINER_REPOSITORY=portainer/portainer-ce
 PORTAINER_VERSION=2.11.1
-
 
 # Container basic conf
 CONTAINER_NAME=Portainer
