@@ -9,23 +9,28 @@ Vous trouverez plusieurs version de scripts permetant d'installer le gestionnair
 ## Distribution UBUNTU + DOCKER.
 
 ### installPortainerRestartAlways_DU.sh
-Un script très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu .
-Au 02/03/2025 je vous conseille de ne plus l'utilser à moins que votre distribution ne gére pas les cgroups.
+Un script très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
+
+Note du 02/03/2025 :
+
++ Je vous conseille de ne plus l'utiliser à moins que votre distribution ne gére pas les cgroups.
++ Update vers Portainer Community Edition 2.27.1
+
 
 ### installPortainerRestartAlwaysLimit_DU.sh
 Même objectif que le script précedent installPortainerRestartAlways.sh, mais cette version permet de limiter l'empreinte mémoire et CPU dasnune envelope de ressource prédéfinie  ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
 
-Edit du 10 Mars 2022 :
+Note du 10 Mars 2022 :
 
-+ modification update vers Portainer Community Edition 2.11.1
++ Update vers Portainer Community Edition 2.11.1
 
 + add a nota about error 'Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.'
 They said :'if docker swap option is disable in cgroup you take the risk that the container was drop by docker if there is not enought ram in the container'
 take a look at https://stackoverflow.com/questions/48685667/what-does-docker-mean-when-it-says-memory-limited-without-swap"
 
-Edit du 03 Mars 2025 :
+Note du 03 Mars 2025 :
 
-+ modification update vers Portainer Community Edition 2.11.1
++ Update vers Portainer Community Edition 2.27.1
 
 
 Script d'Installation de Portainer avec Podman en Mode Rootless sur Alpine Linux
