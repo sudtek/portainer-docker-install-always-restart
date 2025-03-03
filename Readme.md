@@ -36,7 +36,7 @@ Note du 03 Mars 2025 :
 
 # Distribution ALPINE + PODMAN*.
 
-Script d'installation de Portainer avec Podman en Mode Rootless sur Alpine. Au besoin les (scripts pour installer Podman sur votre Alpine en mode ROOTLESS.)[https://github.com/sudtek/mesScriptsBash/tree/136ecd972dfbcb708babcf512d78de23b82efea8/podmanInstallPourAlpine] .
+Script d'installation de Portainer avec Podman en Mode Rootless sur Alpine. Au besoin les scripts pour installer [Podman sur votre Alpine en mode ROOTLESS](https://github.com/sudtek/mesScriptsBash/tree/136ecd972dfbcb708babcf512d78de23b82efea8/podmanInstallPourAlpine).
 
 * Podman est l'équivalent de Docker en version libre et opensource.
 
