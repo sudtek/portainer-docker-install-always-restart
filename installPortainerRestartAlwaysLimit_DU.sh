@@ -3,9 +3,11 @@
 # 10/mars/2022
 # yannick SUDRIE
 #
-# Create a container with portainer in order to easly manage docker container Community Edition
+# installPortainerRestartAlwaysLimit_DU.sh
+#
+# Goal : Create a container with portainer in order to easly manage docker container Community Edition
 # Original code from https://docs.portainer.io/v/ce-2.11/start/install/server/docker/linux
-# This version is able to limit the memory an cpu foot print for tinny and old computer  
+# This version is able to limit the memory an cpu foot print for tinny / old computer
 #
 # DU = Docker & Ubuntu
 #
