@@ -4,7 +4,7 @@
 
 yannick SUDRIE
 
-Vous trouverez plusieurs version de scripts permetant d'installer le gestionnaire de container Portainer version communeauty sur differentes distribution avec redémarrage automatique. 
+Vous trouverez plusieurs version de scripts permetant d'installer le gestionnaire de container Portainer version communeauty sur differentes distribution avec redémarrage automatique en cas de reboot. 
 
 ## Distribution UBUNTU + DOCKER.
 
