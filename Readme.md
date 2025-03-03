@@ -8,7 +8,7 @@ Vous trouverez plusieurs version de scripts permetant d'installer le gestionnair
 
 
 
-## Distribution UBUNTU + DOCKER.
+## Distribution UBUNTU + DOCKER
 
 ### installPortainerRestartAlways_DU.sh
 Le script [installPortainerRestartAlways_DU.sh](https://github.com/sudtek/portainer-install-always-restart/blob/1a6282baebe4c018ad2ae86287a7d5819798f3bd/installPortainerRestartAlways_DU.sh) très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
@@ -35,7 +35,7 @@ Note du 03 Mars 2025 :
 
 -----
 
-# Distribution ALPINE + PODMAN*.
+# Distribution ALPINE + PODMAN* en mode ROOTLESS
 
 Script d'installation de Portainer avec Podman en Mode Rootless sur Alpine. Au besoin les scripts pour installer [Podman sur votre Alpine en mode ROOTLESS](https://github.com/sudtek/mesScriptsBash/tree/136ecd972dfbcb708babcf512d78de23b82efea8/podmanInstallPourAlpine).
 
