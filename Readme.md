@@ -17,8 +17,8 @@ Note du 02/03/2025 :
 + Update vers Portainer Community Edition 2.27.1
 
 
-### [installPortainerRestartAlwaysLimit_DU.sh](https://github.com/sudtek/portainer-docker-install-always-restart/blob/4d6d67bba8cdbab746c7288a1520cd46cdb4ceae/installPortainerRestartAlwaysLimit_DU.sh)
-Même objectif que le script précedent installPortainerRestartAlways.sh mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
+### installPortainerRestartAlwaysLimit_DU.sh
+Le script [installPortainerRestartAlwaysLimit_DU.sh](https://github.com/sudtek/portainer-docker-install-always-restart/blob/4d6d67bba8cdbab746c7288a1520cd46cdb4ceae/installPortainerRestartAlwaysLimit_DU.sh) a le Même objectif que le script précedent mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
 
 Note du 10 Mars 2022 :
 
