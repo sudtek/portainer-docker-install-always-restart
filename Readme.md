@@ -6,16 +6,17 @@ yannick SUDRIE
 
 Vous trouverez plusieurs version de scripts permetant d'installer le gestionnaire de container Portainer version communeauty sur differentes distribution avec redémarrage automatique en cas de reboot. 
 
+
+
 ## Distribution UBUNTU + DOCKER.
 
 ### installPortainerRestartAlways_DU.sh
-Un script très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
+Le script [installPortainerRestartAlways_DU.sh](https://github.com/sudtek/portainer-install-always-restart/blob/1a6282baebe4c018ad2ae86287a7d5819798f3bd/installPortainerRestartAlways_DU.sh) très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
 
 Note du 02/03/2025 :
 
 + Je vous conseille de ne plus l'utiliser à moins que votre distribution ne gére pas les cgroups.
 + Update vers Portainer Community Edition 2.27.1
-
 
 ### installPortainerRestartAlwaysLimit_DU.sh
 Le script [installPortainerRestartAlwaysLimit_DU.sh](https://github.com/sudtek/portainer-docker-install-always-restart/blob/4d6d67bba8cdbab746c7288a1520cd46cdb4ceae/installPortainerRestartAlwaysLimit_DU.sh) a le Même objectif que le script précedent mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
