@@ -104,9 +104,9 @@ Ce script facilite l'installation de Portainer avec Podman en mode rootless sur 
 
 # ATTENTION AVEC LE MODE ROOTLESS
 
-Le mode ROOTLESS présente une subtilité importante : Par habitude en venant d'ubuntu il est facile de se pieger tout seul et d'exécuter le script ou l'install manuel d'un nouveau container via doas ou sudo ... je me suis fait avoir plusieurs fois ... donc j'ai ajouté un garde-fou en debut à ce script; donc si on installe un conteneur via sudo /doas alors le conteneur Portainer ne s'exécutera pas sous l'utilisateur base qui l'a lancé, mais sous l'utilisateur root. Par conséquent, votre utilisateur base ne pourra plus voir le conteneur en cours d'exécution. Si vous relancez l'installation du conteneur via le script, vous risquez de rencontrer des erreurs plus ou moins explicites et biensur vous ene pourrez pas  écraser le conteneur précédent qui occupera toujours le port local 9000. Si vous pensez être confronté à cette situation, effectuez les vérifications suivantes pour clarifier la situation :
+Le mode ROOTLESS présente une subtilité importante : Par habitude en venant d'ubuntu il est facile de se pieger tout seul et d'exécuter le script ou l'install manuel d'un nouveau container via doas ou sudo ... (je me suis fait avoir plusieurs fois donc j'ai ajouté un garde-fou en debut du script). via sudo /doas un container ne s'exécutera pas sous l'utilisateur base mais sous l'utilisateur root. Par conséquent, votre utilisateur base ne pourra plus voir le conteneur en cours d'exécution. Si vous relancez l'installation du conteneur via le script, vous risquez de rencontrer des erreurs plus ou moins explicites et biensur vous ne pourrez plus par manque de droit écraser le conteneur précédent qui occupera toujours le port local 9000. Si vous pensez être confronté à cette situation, effectuez les vérifications suivantes pour clarifier la situation :
 
-Via l'**utilisateur base donc sans sudo ou doas **vérifier la disponiblité du port local 9000 !
+Via l'**utilisateur base donc sans sudo ni doas (et encore moins en root...) **vérifier la disponiblité du port local 9000 !
 
 Si la commande ```netstat -lap```confirme que le port 9000 existe sans PID -
 
@@ -121,7 +121,7 @@ Faites une vérification via la commande ```podman stats -a``` plus de container
 ID          NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO      BLOCK IO    PIDS        CPU TIME    AVG CPU
 ```
 
-Si le stats -a confirme qu'il n'y a aucun conteneur nommé **Portainer** et aucun PIDS commun avec le port local 9000 visible et juste un **-**  alors depuis votre user refaites les mêmes manip mais avec doas ou sudo !
+Si la commande 'stats -a' confirme qu'il n'y a aucun conteneur nommé **Portainer** et aucun PIDS commun avec le port local 9000 visible et juste un **-**  alors depuis votre user refaites les mêmes manip mais avec doas ou sudo (en fonction de ce que vous avez implémentez sur votre ALpine) !
 
 ```
 doas netstat -lap
@@ -137,17 +137,18 @@ ID            NAME        CPU %       MEM USAGE / LIMIT  MEM %       NET IO     
 b29bc65098c0  Portainer   0.29%       111.3MB / 4.082GB  2.73%       0B / 4.086kB  61.99MB / 2.646MB  58          4m39.892525s  0.18%
 ```
 
-Si vous voyes cela c'est que vous avez merdé ... et lancé votre precedente installation de Portainer en invoquant doas ou sudo !!!
+Si vous voyez cela c'est que vous avez merdé et lancé votre prècédente installation de Portainer en invoquant doas ou sudo !!!
 
-Vous devez impérativement tout nettoyer manuellement*  en faisant doas ou sudo puisque votre Portainer a été lancé avec des droits plus élevès que l'utilisateur de base qui avait juste le droit de jouer avec Podman :
+Vous devez impérativement tout nettoyer manuellement* en faisant doas ou sudo puisque votre Portainer a été lancé avec des droits plus élevès que l'utilisateur de base qui avait juste le droit de jouer avec Podman :
 
 - 1) Arréter le container Portainer.
 - 2) Supprimer le container Portainer.
-- 3) Supprimer le volume Portainer_DATAle  et faire le ménage via doas ou sudo avant de relancer le script en utilisateur normal.
+- 3) Supprimer le volume Portainer_DATA et faire le ménage via doas ou sudo.
+- 4) relancer le script en utilisateur normal de base.
 
 ---
 
-* Pour mémoire vu que j'ai pas fait de script ;)  pour cela mais bon comme je suis pas chien je vous mache le boulot :
+* Vu que j'ai pas fait de script de netoyage mais bon comme je suis pas chien je vous mâche le boulot :
 
 ```
 # ----------------------------------------------------------------------------------------------------------------------------------------
