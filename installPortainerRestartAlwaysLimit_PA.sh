@@ -4,16 +4,12 @@
 # yannick Sudrie
 # V_0.1
 #
-# BUT : installer podman (substitue de docker) sur ALpine.
+# BUT : installer podman (substitue de docker) sur la distribution Alpine (ROOTLESS).
 #
-# ATTENTION !!!Ce scrip ne doit être lancé en ni en ROOT ni en invoquant sudo ou doas !!! 
-# Sinon le conteneur Portainer ne sera pas ni visible ni managé en ROOTLESS.
+# ATTENTION !!!Ce scrip ne doit pas être lancé ni en ROOT ni en invoquant sudo ou doas !!! Sinon le conteneur Portainer ne sera pas ni visible ni managé en ROOTLESS.
+# En mode ROOTLESS les conteneurs, overlays, volume ... sont dans le repertoire '/tmp/storage-run-1000/containers' -> voir la commande '$(podman info)
 #
 # Adaptation pour distro 'Alpine Linux v3.21' avec Podman (communeauty) installé en mode ROOTLESS pour remplacer Docker
-# Create a container Portainer-ce alias communauty in order to easily manage other containers
-# adaptat from https://docs.portainer.io/v/ce-2.11/start/install/server/docker/linux
-# This version is able to limit the memory and CPU footprint for tiny and old computers
-#
 # Tested on:
 # Alpine Linux v3.21
 # podman version 5.3.2
@@ -33,20 +29,18 @@
 # Nombre de tentatives de retry
 #export CONTAINERS_RETRY="5"
 # ------------------------------------------------------
-#
-# NOTE : En mode ROOTLESS les conteneurs, overlays, volume ... sont dans le repertoire '/tmp/storage-run-1000/containers' -> voir la commande '$(podman info)
 
+clear
 
-# Vérifie si le script est exécuté en tant que root
+# Vérifie anant tout si le script est exécuté en tant que root
 if [ "$(id -u)" -eq 0 ]; then
     echo "ATTENTION !!!! Ce script ne doit pas être exécuté avec sudo ou doas ou en root. Veuillez l'exécuter avec les droits utilisateur basique  qui peut invoquer podman !!!!"
     exit 1
 fi
 
-
 clear 
 
-
+# 03 mars 2025 bloc à concerver le temps de faire des tests :
 # Tests to ensure your user has the rights to access the socket /run/podman/podman.sock in rootless mode
 #	PODMAN_SOCK_PERMISION=$(ls -l /run/podman/podman.sock) # Check permissions if root, use doas!
 #	PODMAN_SOCK_REMOTE=$(podman info --format '{{.Host.RemoteSocket.Path}}')
@@ -69,24 +63,23 @@ else
 fi
 
 
-# Portainer basic configuration
+# Portainer configuration de base
 PORTAINER_REPOSITORY="portainer/portainer-ce"
 #PORTAINER_VERSION="2.11.1" # OK mais vielle version
-# version au 27/fev/2025 -> OK.
+# version au 27/fev/2025
 PORTAINER_VERSION="2.27.1"
 CONTAINER_NAME="Portainer"
 CONTAINER_INSIDE_PORT="9000"
 CONTAINER_OUTSIDE_PORT="9000"
 CONTAINER_VOLUME_NAME="portainer_data"
 
-# Limiter le  container
+# Limiter / contraindre les ressources hote 
 # Take a look at 'doas podman update --help' for more options (limit IO could be useful on SD cards)
 # Au besoin voir doc docker idem que podman  https://docs.docker.com/config/containers/resource_constraints/
 # Note : 'podman info' vous informera de toutes les possibilitées cgroup de votre bécane exemple :
 # $podman info
 # host:
-#  arch: amd64
-#  buildahVersion: 1.38.1
+#  ...
 #  cgroupControllers:
 #  - cpuset
 #  - cpu
@@ -117,7 +110,7 @@ podman volume create $CONTAINER_VOLUME_NAME
 echo "Volume ${CONTAINER_VOLUME_NAME} créé !"
 
 # Installation de Portainer en mode resident permanent redemarage automatique au reboot.
-# Note du 28/fev/2025 l'option '--replace' semble poser pb et/ou ne pas faire son taf en libérant le port local et écrasant le conteneur 'Portainer' précedement créé !
+# Note du 28 fev 2025 l'option '--replace' semble poser pb et/ou ne pas faire son taf en libérant le port local et écrasant le conteneur 'Portainer' précedement créé !
 # Note du 01 mars 2025 non en fait c'est un pb de lancement de script en doas VS ROOTLESS ...
 
 podman run -d --replace --name=${CONTAINER_NAME} --restart=always -p ${CONTAINER_INSIDE_PORT}:${CONTAINER_OUTSIDE_PORT} -v ${PODMAN_SOCK_ROOTLESS}:/var/run/docker.sock -v ${CONTAINER_VOLUME_NAME}:/data ${PORTAINER_REPOSITORY}:${PORTAINER_VERSION}
