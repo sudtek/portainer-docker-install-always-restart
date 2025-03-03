@@ -40,8 +40,10 @@ Note du 03 Mars 2025 :
 Note : Podman est l'équivalent de Docker en version libre et opensource 
 
 ### installPortainerRestartAlwaysLimit_PA.sh
-Le script installPortainerRestartAlwaysLimit_PA.sh automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux et configure Portainer pour qu'il redémarre automatiquement au démarrage tout en limitant les ressources CPU, mémoire, swap ...  du container Portainer. 
+Le script [installPortainerRestartAlwaysLimit_PA.sh](https://github.com/sudtek/portainer-install-always-restart/blob/f0d9f981c38f7bc18e4f1f5fdd44a69bc4c30f41/installPortainerRestartAlwaysLimit_PA.sh) automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux et configure Portainer pour qu'il redémarre automatiquement au démarrage tout en limitant les ressources CPU, mémoire, swap ...  du container Portainer. 
 
+_Note : Si vous utilisez des conteneurs qui consomment beaucoup de ressources hôte exemple un modéle IA ... vous devriez envisager de limiter sa capacité à phagociter les ressources de votre hôte ...
+_
 ## Prérequis
 
 - Alpine Linux v3.21.
