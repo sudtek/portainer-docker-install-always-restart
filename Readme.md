@@ -18,7 +18,7 @@ Note du 02/03/2025 :
 
 
 ### installPortainerRestartAlwaysLimit_DU.sh
-Même objectif que le script précedent installPortainerRestartAlways.sh, mais cette version permet de limiter l'empreinte mémoire et CPU dasnune envelope de ressource prédéfinie  ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
+Même objectif que le script précedent installPortainerRestartAlways.sh mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
 
 Note du 10 Mars 2022 :
 
@@ -34,9 +34,11 @@ Note du 03 Mars 2025 :
 
 -----
 
-# Distribution Alpine + PODMAN.
+# Distribution ALPINE + PODMAN*.
 
-Script d'Installation de Portainer avec Podman en Mode Rootless sur Alpine Linux.
+Script d'installation de Portainer avec Podman en Mode Rootless sur Alpine. Au besoin les (scripts pour installer Podman sur votre Alpine en mode ROOTLESS.)[https://github.com/sudtek/mesScriptsBash/tree/136ecd972dfbcb708babcf512d78de23b82efea8/podmanInstallPourAlpine] .
+
+* Podman est l'équivalent de Docker en version libre et opensource.
 
 ## installPortainerRestartAlwaysLimit_PA.sh
 
