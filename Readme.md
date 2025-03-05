@@ -63,23 +63,42 @@ Log de Portainer à sa création :
 Point #2 (A éclaircir) : Si je me référe aux informations de [Daniel Schier sur Podman - Portainer en mode ROTTFULL & ROOTLESS](https://blog.while-true-do.io/podman-portainer/)
 Je pense avoir un pb sur mon script sur Alpine qui pointe vers /run/podman/podman.sock qui est la proprieté de root à la place d'un sock qui à juste les droits de base de l'utilisateur donc sur un truc du style /run/user/$UID/podman/podman.sock -> pb dans mon script d'install ROOTLESS ??? 
  
-Socket Rootful vs Rootless :
+Socket Rootful vs Rootless
 
 Rootful : Le socket /run/podman/podman.sock appartient à root. Cela signifie qu'il est utilisé pour les opérations Podman en mode rootful, où Podman est exécuté avec des privilèges root.
 Rootless : En mode rootless, Podman devrait utiliser un socket spécifique à l'utilisateur, généralement situé dans un répertoire comme /run/user/$UID/podman/podman.sock. Cela permet à chaque utilisateur d'avoir son propre socket Podman, isolé des autres utilisateurs.
+
 Permissions et Propriétaire :
 
 Permissions : Le socket /run/podman/podman.sock appartient à root et a des permissions restrictives (srw-------), ce qui signifie que seul l'utilisateur root peut y accéder. Cela ne convient pas pour une utilisation rootless, où l'utilisateur non-root doit pouvoir interagir avec le socket.
 Utilisateur Rootless : En mode rootless, le socket doit être accessible par l'utilisateur non-root qui exécute Podman. Cela implique que le socket doit être situé dans un répertoire appartenant à cet utilisateur et avoir les permissions appropriées.
-Configuration Rootless :
 
-Création du Socket Rootless : Pour utiliser Podman en mode rootless, vous devez vous assurer que le socket est créé dans le répertoire utilisateur approprié. Cela peut nécessiter de configurer le service utilisateur pour Podman, comme mentionné précédemment.
-Vérification : Vous pouvez vérifier si le socket rootless est correctement configuré en exécutant des commandes Podman en tant qu'utilisateur non-root et en vérifiant l'emplacement du socket.
+Configuration Rootless
+
+Création du Socket Rootless : Pour utiliser Podman en mode rootless, on doit s'assurer que le socket est créé dans le répertoire utilisateur approprié. Cela peut nécessiter de configurer le service utilisateur pour Podman. (probalement ici mon PB !!) 
+Vérification : Vérifier si le socket rootless est correctement configuré en exécutant des commandes Podman en tant qu'utilisateur non-root et en vérifiant l'emplacement du socket.
+```podman info | grep -A2 -B2 -i sock
+
+remoteSocket:
+    exists: true
+    path: /tmp/storage-run-1000/podman/podman.sock
+  rootlessNetworkCmd: pasta
+  security:
+```
 Conclusion
-Votre raisonnement est correct : en mode rootless, Podman devrait utiliser un socket spécifique à l'utilisateur, et non un socket appartenant à root. Le fait que vous ne trouviez que le socket /run/podman/podman.sock appartenant à root indique que Podman n'est pas configuré pour fonctionner en mode rootless pour votre utilisateur.
+En mode rootless, Podman devrait utiliser un socket spécifique à l'utilisateur, et non un socket appartenant à root ```podman/podman.sock```. Le fait de ne pas trouver le socket /run/podman/podman.sock appartenant à root indiquerait que Podman n'est pas configuré pour fonctionner en mode rootless pour l'utilisateur ... sauf que selon ```podman info | grep -A2 -B2 -i rootless
 
-
-
+    exists: true
+    path: /tmp/storage-run-1000/podman/podman.sock
+  rootlessNetworkCmd: pasta
+  security:
+    apparmorEnabled: false
+    capabilities: CAP_CHOWN,CAP_DAC_OVERRIDE,CAP_FOWNER,CAP_FSETID,CAP_KILL,CAP_NET_BIND_SERVICE,CAP_SETFCAP,CAP_SETGID,CAP_SETPCAP,CAP_SETUID,CAP_SYS_CHROOT
+    rootless: true
+    seccompEnabled: true
+    seccompProfilePath: /etc/containers/seccomp.json
+```
+le mode rootless à la valeur true ```rootless: true``` !!!!
 
 
 
