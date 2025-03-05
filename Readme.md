@@ -37,7 +37,51 @@ Note du 03 Mars 2025 :
 
 # Distribution ALPINE + PODMAN* en mode ROOTLESS
 
-Note : Podman est l'équivalent de Docker en version libre et opensource 
+*Podman est l'équivalent de Docker en version libre et opensource. 
+
+_Note 05/03/2025 : Ce script est fonctionnel mais il reste des points à peaufiner, éclaircir et confirmer ... :_
+
+Point #1 (A confirmer) : Si on exécute le script d'installation de Portainer il semble que si on ne se connecte pas dans un certain délais (envion 5 minutes) au container Portainer pour fixer le login / password d'administration alors le container s'arrête et ne redemararra pas au prochain restart. Ce comportement qui va à l'encontre de la directive ```---restart=always``` semble implanté au sein du container  ```podman logs Portainer``` pour des raison de sécurité ```2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer``` 
+
+Log de Portainer à sa création : 
+```
+2025/03/01 03:41AM // note perso création du containeur viale script !
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/cmd/portainer/main.go:310 > encryption key file not present | filename=portainer
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/cmd/portainer/main.go:334 > proceeding without encryption key |
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/database/boltdb/db.go:133 > loading PortainerDB | filename=portainer.db
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/internal/ssl/ssl.go:79 > no cert files found, generating self signed SSL certificates |
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/chisel/service.go:228 > generated a new Chisel private key file | private-key=/data/chisel/private-key.pem
+2025/03/01 03:41:47 server: Reverse tunnelling enabled
+2025/03/01 03:41:47 server: Fingerprint E5POg1bdHl7dXj17Ahb31zuNTsbJM9NscbCB9kITRb4=
+2025/03/01 03:41:47 server: Listening on http://0.0.0.0:8000
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/cmd/portainer/main.go:601 > starting Portainer | build_number=164 go_version=1.23.5 image_tag=2.27.1-linux-amd64 nodejs_version=18.20.7 version=2.27.1 webpack_version=5.88.2 yarn_version=1.22.22
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/http/server.go:363 > starting HTTPS server | bind_address=:9443
+2025/03/01 03:41AM INF github.com/portainer/portainer/api/http/server.go:347 > starting HTTP server | bind_address=:9000
+2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer
+```
+
+Point #2 (A éclaircir) : Si je me référe aux informations de [Daniel Schier sur Podman - Portainer en mode ROTTFULL & ROOTLESS](https://blog.while-true-do.io/podman-portainer/)
+Je pense avoir un pb sur mon script sur Alpine qui pointe vers /run/podman/podman.sock qui est la proprieté de root à la place d'un sock qui à juste les droits de base de l'utilisateur donc sur un truc du style /run/user/$UID/podman/podman.sock -> pb dans mon script d'install ROOTLESS ??? 
+ 
+Socket Rootful vs Rootless :
+
+Rootful : Le socket /run/podman/podman.sock appartient à root. Cela signifie qu'il est utilisé pour les opérations Podman en mode rootful, où Podman est exécuté avec des privilèges root.
+Rootless : En mode rootless, Podman devrait utiliser un socket spécifique à l'utilisateur, généralement situé dans un répertoire comme /run/user/$UID/podman/podman.sock. Cela permet à chaque utilisateur d'avoir son propre socket Podman, isolé des autres utilisateurs.
+Permissions et Propriétaire :
+
+Permissions : Le socket /run/podman/podman.sock appartient à root et a des permissions restrictives (srw-------), ce qui signifie que seul l'utilisateur root peut y accéder. Cela ne convient pas pour une utilisation rootless, où l'utilisateur non-root doit pouvoir interagir avec le socket.
+Utilisateur Rootless : En mode rootless, le socket doit être accessible par l'utilisateur non-root qui exécute Podman. Cela implique que le socket doit être situé dans un répertoire appartenant à cet utilisateur et avoir les permissions appropriées.
+Configuration Rootless :
+
+Création du Socket Rootless : Pour utiliser Podman en mode rootless, vous devez vous assurer que le socket est créé dans le répertoire utilisateur approprié. Cela peut nécessiter de configurer le service utilisateur pour Podman, comme mentionné précédemment.
+Vérification : Vous pouvez vérifier si le socket rootless est correctement configuré en exécutant des commandes Podman en tant qu'utilisateur non-root et en vérifiant l'emplacement du socket.
+Conclusion
+Votre raisonnement est correct : en mode rootless, Podman devrait utiliser un socket spécifique à l'utilisateur, et non un socket appartenant à root. Le fait que vous ne trouviez que le socket /run/podman/podman.sock appartenant à root indique que Podman n'est pas configuré pour fonctionner en mode rootless pour votre utilisateur.
+
+
+
+
+
 
 ### installPortainerRestartAlwaysLimit_PA.sh
 Le script [installPortainerRestartAlwaysLimit_PA.sh](https://github.com/sudtek/portainer-install-always-restart/blob/f0d9f981c38f7bc18e4f1f5fdd44a69bc4c30f41/installPortainerRestartAlwaysLimit_PA.sh) automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux et configure Portainer pour qu'il redémarre automatiquement au démarrage tout en limitant les ressources CPU, mémoire, swap ...  du container Portainer. 
