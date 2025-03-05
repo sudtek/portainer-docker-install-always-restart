@@ -41,7 +41,7 @@ Note du 03 Mars 2025 :
 
 _Note 05/03/2025 : Ce script est fonctionnel mais il reste des points à peaufiner, éclaircir et confirmer ... :_
 
-Point #1 (A confirmer) : Si on exécute le script d'installation de Portainer il semble que si on ne se connecte pas dans un certain délais (envion 5 minutes) au container Portainer pour fixer le login / password d'administration alors le container s'arrête et ne redemararra pas au prochain restart. Ce comportement qui va à l'encontre de la directive ```---restart=always``` semble implanté au sein du container  ```podman logs Portainer``` pour des raison de sécurité ```2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer``` 
+Point #1 (A confirmer) : Si on exécute le script d'installation de Portainer il semble que si on ne se connecte pas dans un délais rapide (envion 5 minutes) au container Portainer pour fixer au minimum le login / password d'administration alors le container s'arrête et ne redemarera pas au prochain reboot. Ce comportement qui va à l'encontre de la directive ```---restart=always``` semble implanté au sein du container  ```podman logs Portainer``` pour des raison de sécurité ```2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer``` 
 
 Log de Portainer à sa création : 
 ```
@@ -59,6 +59,7 @@ Log de Portainer à sa création :
 2025/03/01 03:41AM INF github.com/portainer/portainer/api/http/server.go:347 > starting HTTP server | bind_address=:9000
 2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer
 ```
+Pour configurer Portainer un ```podman restart Portainer``` permet d'accédere à son interface web ```http://XX.XX.XX.XX:9000```
 
 Point #2 (A éclaircir) : Si je me référe aux informations de [Daniel Schier sur Podman - Portainer en mode ROTTFULL & ROOTLESS](https://blog.while-true-do.io/podman-portainer/)
 Je pense avoir un pb sur mon script sur Alpine qui pointe vers /run/podman/podman.sock qui est la proprieté de root à la place d'un sock qui à juste les droits de base de l'utilisateur donc sur un truc du style /run/user/$UID/podman/podman.sock -> pb dans mon script d'install ROOTLESS ??? 
