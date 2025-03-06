@@ -51,7 +51,7 @@
 
 clear
 
-# Vérifie anant tout si le script est exécuté en tant que root
+# Vérifie avant tout si le script est exécuté en tant que root
 if [ "$(id -u)" -eq 0 ]; then
     echo "ATTENTION !!!! Ce script ne doit pas être exécuté avec sudo ou doas ou en root. Veuillez l'exécuter avec les droits utilisateur basique  qui peut invoquer podman !!!!"
     exit 1
