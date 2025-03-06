@@ -35,15 +35,16 @@ Note du 03 Mars 2025 :
 
 -----
 
+
 # Distribution ALPINE + PODMAN* en mode ROOTLESS
+
+**Note 06/03/2025 : Attention Ce script est partielement fonctionnel il reste des points à peaufiner, éclaircir et confirmer ...**
 
 
 Le script [installPortainerRestartAlwaysLimit_PA01.sh](installPortainerRestartAlwaysLimit_PA01.sh) même objectif que le script précedent mais dans un environement rootless cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 150 Mo de RAM et 200 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
 
 *Podman est l'équivalent de Docker en version libre et opensource.  
 
-**Note 06/03/2025 : Attention Ce script est partielement fonctionnel il reste des points à peaufiner, éclaircir et confirmer ... :
-**
 Activer le mode Debug de podman : ```podman info --log-level=debug```
 
 Point #1 (A confirmer) : Si on exécute le script d'installation de Portainer il semble que si on ne se connecte pas dans un délais rapide (envion 5 minutes) au container Portainer pour fixer au minimum le login / password d'administration alors le container s'arrête et ne redemarera pas au prochain reboot. Ce comportement qui va à l'encontre de la directive ```---restart=always``` semble implanté au sein du container  ```podman logs Portainer``` pour des raison de sécurité ```2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer``` 
