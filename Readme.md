@@ -11,7 +11,7 @@ Vous trouverez plusieurs version de scripts permetant d'installer le gestionnair
 ## Distribution UBUNTU + DOCKER
 
 ### installPortainerRestartAlways_DU.sh
-Le script [installPortainerRestartAlways_DU.sh](https://github.com/sudtek/portainer-install-always-restart/blob/1a6282baebe4c018ad2ae86287a7d5819798f3bd/installPortainerRestartAlways_DU.sh) très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
+Le script [installPortainerRestartAlways_DU.sh](installPortainerRestartAlways_DU.sh) très simple extrait de [portnair.io](https://portainer.io/install.html) pour installer Portnair pour Docker avec redémarrage automatique de Portnair sur distribution Ubuntu.
 
 Note du 02/03/2025 :
 
@@ -19,7 +19,7 @@ Note du 02/03/2025 :
 + Update vers Portainer Community Edition 2.27.1
 
 ### installPortainerRestartAlwaysLimit_DU.sh
-Le script [installPortainerRestartAlwaysLimit_DU.sh](https://github.com/sudtek/portainer-docker-install-always-restart/blob/4d6d67bba8cdbab746c7288a1520cd46cdb4ceae/installPortainerRestartAlwaysLimit_DU.sh) a le Même objectif que le script précedent mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
+Le script [installPortainerRestartAlwaysLimit_DU.sh](installPortainerRestartAlwaysLimit_DU.sh) a le Même objectif que le script précedent mais cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 10 Mo de RAM et 90 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
 
 Note du 10 Mars 2022 :
 
@@ -106,7 +106,7 @@ le mode rootless à la valeur true ```rootless: true``` !!!!
 
 
 ### installPortainerRestartAlwaysLimit_PA.sh
-Le script [installPortainerRestartAlwaysLimit_PA.sh](https://github.com/sudtek/portainer-install-always-restart/blob/f0d9f981c38f7bc18e4f1f5fdd44a69bc4c30f41/installPortainerRestartAlwaysLimit_PA.sh) automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux et configure Portainer pour qu'il redémarre automatiquement au démarrage tout en limitant les ressources CPU, mémoire, swap ...  du container Portainer. 
+Le script [installPortainerRestartAlwaysLimit_PA.sh](installPortainerRestartAlwaysLimit_PA.sh) automatise l'installation de Portainer avec Podman en mode rootless sur une distribution Alpine Linux et configure Portainer pour qu'il redémarre automatiquement au démarrage tout en limitant les ressources CPU, mémoire, swap ...  du container Portainer. 
 
 _Note : Si vous utilisez des conteneurs qui consomment beaucoup de ressources hôte exemple un modéle IA ... vous devriez envisager de limiter sa capacité à phagociter les ressources de votre hôte ...
 _
