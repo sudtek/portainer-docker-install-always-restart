@@ -38,7 +38,7 @@ Note du 03 Mars 2025 :
 
 # Distribution ALPINE + PODMAN* en mode ROOTLESS
 
-**Note 06/03/2025 : Attention Ce script est partielement fonctionnel il reste des points à peaufiner, éclaircir et confirmer ...**
+**Note 06/03/2025 : Attention Ce script est partiellement fonctionnel il reste des points à peaufiner, éclaircir et confirmer ...**
 
 
 Le script [installPortainerRestartAlwaysLimit_PA01.sh](installPortainerRestartAlwaysLimit_PA01.sh) même objectif que le script précedent mais dans un environement rootless cette version permet de limiter l'empreinte mémoire et CPU dans une envelope de ressource prédéfinie et contrainte ... par défaut à 20 % d'un CPU, 150 Mo de RAM et 200 Mo de swap. Veuillez vérifier les commentaires dans le script avant de l'utiliser ou de modifier les valeurs.
