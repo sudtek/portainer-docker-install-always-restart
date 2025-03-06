@@ -37,9 +37,11 @@ Note du 03 Mars 2025 :
 
 # Distribution ALPINE + PODMAN* en mode ROOTLESS
 
-*Podman est l'équivalent de Docker en version libre et opensource. 
+*Podman est l'équivalent de Docker en version libre et opensource.  
 
-_Note 05/03/2025 : Ce script est fonctionnel mais il reste des points à peaufiner, éclaircir et confirmer ... :_
+_Note 05/03/2025 : Ce script est partielement fonctionnel il reste des points à peaufiner, éclaircir et confirmer ... :_
+
+Activer le mode Debug de podman : ```podman info --log-level=debug```
 
 Point #1 (A confirmer) : Si on exécute le script d'installation de Portainer il semble que si on ne se connecte pas dans un délais rapide (envion 5 minutes) au container Portainer pour fixer au minimum le login / password d'administration alors le container s'arrête et ne redemarera pas au prochain reboot. Ce comportement qui va à l'encontre de la directive ```---restart=always``` semble implanté au sein du container  ```podman logs Portainer``` pour des raison de sécurité ```2025/03/01 03:46AM INF github.com/portainer/portainer/api/adminmonitor/admin_monitor.go:62 > the Portainer instance timed out for security purposes, to re-enable your Portainer instance, you will need to restart Portainer``` 
 
@@ -147,8 +149,8 @@ Nom du Conteneur : Portainer
 Ports : 9000:9000
 Volume : portainer_data
 Limites de Ressources :
-Mémoire : 15 Mo
-Swap : 100 Mo
+Mémoire : 150 Mo # La version V2.27.1 est plus gourmande que la 2.11.1
+Swap : 200 Mo
 CPU : 0.2
 
 ### 5. Vérification de l'Installation
